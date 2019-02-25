@@ -8,17 +8,15 @@ export default class WebsocketServer {
         this.port = port;
     }
 
-    /**
-     * Starts websocket server
-     */
-    start () {
-        RNWebsocketServer.start(this.ipAddress, this.port);
+    start (onStart, onOpen, onClose, onMessage, onError) {
+        RNWebsocketServer.start(this.ipAddress, this.port, onStart, onOpen, onClose, onMessage, onError);
     }
 
-    /**
-     * Stops/closes websocket server
-     */
     stop () {
         RNWebsocketServer.stop();
+    }
+
+    broadcast(message) {
+        RNWebsocketServer.broadcast(message);
     }
 }
