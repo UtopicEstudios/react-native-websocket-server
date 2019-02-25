@@ -49,7 +49,7 @@ public class WebServer extends WebSocketServer {
 
     @Override
     public void onError(WebSocket conn, Exception ex) {
-        onError.invoke(conn.getRemoteSocketAddress().getHostName(), ex.toString())
+        onError.invoke(conn.getRemoteSocketAddress().getHostName(), ex.toString());
     }
 
     @Override
