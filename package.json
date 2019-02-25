@@ -1,6 +1,6 @@
 {
   "name": "react-native-websocket-server",
-  "version": "1.0.5",
+  "version": "1.0.10",
   "description": "",
   "main": "index.js",
   "scripts": {
