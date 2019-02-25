@@ -46,7 +46,7 @@ public class RNWebsocketServerModule extends ReactContextBaseJavaModule {
                     Callback onError) throws IOException, InterruptedException {
         InetSocketAddress inetSocketAddress = new InetSocketAddress(ipAddress, port);
 
-        webServer = new WebServer(inetSocketAddress);
+        webServer = new WebServer(inetSocketAddress, onStart, onOpen, onClose, onMessage, onError);
 
         webServer.start();
     }
