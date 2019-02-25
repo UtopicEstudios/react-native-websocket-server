@@ -5,6 +5,7 @@ import android.util.Log;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.Callback;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -39,7 +40,10 @@ public class RNWebsocketServerModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void start(String ipAddress, int port) throws IOException, InterruptedException {
+    public void start(String ipAddress, int port, 
+                    Callback onStart, Callback onOpen,
+                    Callback onClose, Callback onMessage, 
+                    Callback onError) throws IOException, InterruptedException {
         InetSocketAddress inetSocketAddress = new InetSocketAddress(ipAddress, port);
 
         webServer = new WebServer(inetSocketAddress);
@@ -50,5 +54,10 @@ public class RNWebsocketServerModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void stop() throws IOException, InterruptedException {
         webServer.stop();
+    }
+
+    @ReactMethod
+    public void broadcast(String message) {
+        webServer.broadcast(message);
     }
 }

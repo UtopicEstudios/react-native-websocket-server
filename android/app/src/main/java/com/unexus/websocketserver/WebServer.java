@@ -9,79 +9,52 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.InetSocketAddress;
+import com.facebook.react.bridge.Callback;
 
 /**
  * Created by umsi on 27/11/2017.
  */
 
 public class WebServer extends WebSocketServer {
-    public WebServer(InetSocketAddress inetSocketAddress) {
+
+    Callback onStart, onOpen, onClose, onMessage, onError;
+
+    public WebServer(InetSocketAddress inetSocketAddress, 
+                    Callback onStart, Callback onOpen,
+                    Callback onClose, Callback onMessage, 
+                    Callback onError) {
         super(inetSocketAddress);
+
+        this.onStart = onStart;
+        this.onOpen = onOpen;
+        this.onClose = onClose;
+        this.onMessage = onMessage;
+        this.onError = onError;
     }
 
     @Override
     public void onOpen(WebSocket conn, ClientHandshake handshake) {
-        try {
-            String jsonString = (new JSONObject()).put("type", "onMessage")
-                    .put("data", conn.getRemoteSocketAddress().getHostName() + " entered the room")
-                    .toString();
-
-            broadcast(jsonString);
-        } catch (JSONException e) {
-            broadcast(e.getMessage());
-        }
+        onOpen.invoke(conn.getRemoteSocketAddress().getHostName());
     }
 
     @Override
     public void onClose(WebSocket conn, int code, String reason, boolean remote) {
-        try {
-            String jsonString = (new JSONObject()).put("type", "onMessage")
-                    .put("data", conn.getRemoteSocketAddress().getHostName() + " has left the room")
-                    .toString();
-
-            broadcast(jsonString);
-        } catch (JSONException e) {
-            broadcast(e.getMessage());
-        }
+        onClose.invoke(conn.getRemoteSocketAddress().getHostName(), code, reason, remote);
     }
 
     @Override
     public void onMessage(WebSocket conn, String message) {
-        try {
-            String jsonString = (new JSONObject()).put("type", "onMessage")
-                    .put("data", conn.getRemoteSocketAddress().getHostName() + ": " + message)
-                    .toString();
-
-            broadcast(jsonString);
-        } catch (JSONException e) {
-            broadcast(e.getMessage());
-        }
+        onMessage.invoke(conn.getRemoteSocketAddress().getHostName(), message);
     }
 
     @Override
     public void onError(WebSocket conn, Exception ex) {
-        try {
-            String jsonString = (new JSONObject()).put("type", "onError")
-                    .put("data", ex.getMessage())
-                    .toString();
-
-            broadcast(jsonString);
-        } catch (JSONException e) {
-            broadcast(e.getMessage());
-        }
+        onError.invoke(conn.getRemoteSocketAddress().getHostName(), ex.toString())
     }
 
     @Override
     public void onStart() {
-        try {
-            String jsonString = (new JSONObject()).put("type", "onStart")
-                    .put("data", "Websocket server now starting...")
-                    .toString();
-
-            broadcast(jsonString);
-        } catch (JSONException e) {
-            broadcast(e.getMessage());
-        }
+        onStart.invoke();
     }
 }
 
