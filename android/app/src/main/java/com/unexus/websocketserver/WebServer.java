@@ -53,6 +53,7 @@ public class WebServer extends WebSocketServer {
     public void onMessage(WebSocket conn, String message) {
         WritableMap payload = Arguments.createMap();
 
+        payload.putString("connId", conn.getRemoteSocketAddress().getHostName());
         payload.putString("message", message);
 
         reactContext.getJSModule(RCTDeviceEventEmitter.class)
