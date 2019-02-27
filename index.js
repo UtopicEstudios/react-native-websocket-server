@@ -9,7 +9,7 @@ export default class WebsocketServer {
     }
 
     start () {
-        RNWebsocketServer.start(this.ipAddress, this.port);
+        RNWebsocketServer.start(this.ipAddress, this.port );
     }
 
     stop () {

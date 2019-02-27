@@ -27,7 +27,7 @@ import org.java_websocket.handshake.ServerHandshakeBuilder;
  * Created by umsi on 27/11/2017.
  */
 
-public class RNWebsocketServerModule extends ReactContextBaseJavaModule {
+public class RNWebsocketServerModule extends ReactContextBaseJavaModule implements LifecycleEventListener {
     private WebServer webServer = null;
     private ReactApplicationContext reactContext;
 
@@ -58,5 +58,28 @@ public class RNWebsocketServerModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void broadcast(String message) {
         webServer.broadcast(message);
+    }
+
+    @Override
+    public void onHostResume() {
+        //
+    }
+
+    @Override
+    public void onHostPause() {
+        try {
+            this.stop();
+        } catch(Exception e) {
+            //
+        }
+    }
+
+    @Override
+    public void onHostDestroy() {
+        try {
+            this.stop();
+        } catch(Exception e) {
+            //
+        }
     }
 }
