@@ -53,7 +53,7 @@ public class WebServer extends WebSocketServer {
         payload.putString("message", message);
 
         reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-        .emit("onMessage", params);
+        .emit("onWebsocketClientMessage", params);
     }
 
     @Override
