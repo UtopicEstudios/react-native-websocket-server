@@ -29,9 +29,11 @@ import org.java_websocket.handshake.ServerHandshakeBuilder;
 
 public class RNWebsocketServerModule extends ReactContextBaseJavaModule {
     private WebServer webServer = null;
+    private ReactApplicationContext reactContext;
 
     public RNWebsocketServerModule(ReactApplicationContext reactContext) {
         super(reactContext);
+        this.reactContext = reactContext;
     }
 
     @Override
@@ -40,13 +42,10 @@ public class RNWebsocketServerModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void start(String ipAddress, int port, 
-                    Callback onStart, Callback onOpen,
-                    Callback onClose, Callback onMessage, 
-                    Callback onError) throws IOException, InterruptedException {
+    public void start(String ipAddress, int port) throws IOException, InterruptedException {
         InetSocketAddress inetSocketAddress = new InetSocketAddress(ipAddress, port);
 
-        webServer = new WebServer(inetSocketAddress, onStart, onOpen, onClose, onMessage, onError);
+        webServer = new WebServer(inetSocketAddress, reactContext);
 
         webServer.start();
     }

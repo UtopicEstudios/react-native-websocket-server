@@ -17,44 +17,62 @@ import com.facebook.react.bridge.Callback;
 
 public class WebServer extends WebSocketServer {
 
-    Callback onStart, onOpen, onClose, onMessage, onError;
+    private ReactApplicationContext reactContext;
 
-    public WebServer(InetSocketAddress inetSocketAddress, 
-                    Callback onStart, Callback onOpen,
-                    Callback onClose, Callback onMessage, 
-                    Callback onError) {
+    public WebServer(InetSocketAddress inetSocketAddress, ReactApplicationContext reactContext) {
         super(inetSocketAddress);
-
-        this.onStart = onStart;
-        this.onOpen = onOpen;
-        this.onClose = onClose;
-        this.onMessage = onMessage;
-        this.onError = onError;
+        this.reactContext = reactContext;
     }
 
     @Override
     public void onOpen(WebSocket conn, ClientHandshake handshake) {
-        onOpen.invoke(conn.getRemoteSocketAddress().getHostName());
+        WritableMap payload = Arguments.createMap();
+        payload.putString("connId", conn.getRemoteSocketAddress().getHostName());
+
+        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+        .emit("onWebsocketClientOpen", params);
     }
 
     @Override
     public void onClose(WebSocket conn, int code, String reason, boolean remote) {
-        onClose.invoke(conn.getRemoteSocketAddress().getHostName(), code, reason, remote);
+        WritableMap payload = Arguments.createMap();
+
+        payload.putString("connId", conn.getRemoteSocketAddress().getHostName());
+        payload.putInt("code", code);
+        payload.putString("reason", reason);
+        payload.putBoolean("remote", remote);
+
+        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+        .emit("onWebsocketClientClose", params);
     }
 
     @Override
     public void onMessage(WebSocket conn, String message) {
-        onMessage.invoke(conn.getRemoteSocketAddress().getHostName(), message);
+        WritableMap payload = Arguments.createMap();
+
+        payload.putString("message", message);
+
+        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+        .emit("onMessage", params);
     }
 
     @Override
     public void onError(WebSocket conn, Exception ex) {
-        onError.invoke(conn.getRemoteSocketAddress().getHostName(), ex.toString());
+        WritableMap payload = Arguments.createMap();
+        
+        payload.putString("connId", conn.getRemoteSocketAddress().getHostName());
+        payload.putBoolean("exception", ex.toString());
+
+        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+        .emit("onWebsocketClientError", params);
     }
 
     @Override
     public void onStart() {
-        onStart.invoke();
+        WritableMap payload = Arguments.createMap();
+
+        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+        .emit("onWebsocketServerStart", params);
     }
 }
 
