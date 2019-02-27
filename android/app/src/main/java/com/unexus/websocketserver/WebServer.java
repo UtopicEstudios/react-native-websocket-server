@@ -13,6 +13,7 @@ import com.facebook.react.bridge.Callback;
 import com.facebook.react.modules.core.DeviceEventManagerModule.RCTDeviceEventEmitter;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.bridge.ReactApplicationContext;
 /**
  * Created by umsi on 27/11/2017.
  */
@@ -31,7 +32,7 @@ public class WebServer extends WebSocketServer {
         WritableMap payload = Arguments.createMap();
         payload.putString("connId", conn.getRemoteSocketAddress().getHostName());
 
-        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+        reactContext.getJSModule(RCTDeviceEventEmitter.class)
         .emit("onWebsocketClientOpen", payload);
     }
 
@@ -44,7 +45,7 @@ public class WebServer extends WebSocketServer {
         payload.putString("reason", reason);
         payload.putBoolean("remote", remote);
 
-        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+        reactContext.getJSModule(RCTDeviceEventEmitter.class)
         .emit("onWebsocketClientClose", payload);
     }
 
@@ -54,7 +55,7 @@ public class WebServer extends WebSocketServer {
 
         payload.putString("message", message);
 
-        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+        reactContext.getJSModule(RCTDeviceEventEmitter.class)
         .emit("onWebsocketClientMessage", payload);
     }
 
@@ -65,7 +66,7 @@ public class WebServer extends WebSocketServer {
         payload.putString("connId", conn.getRemoteSocketAddress().getHostName());
         payload.putString("exception", ex.toString());
 
-        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+        reactContext.getJSModule(RCTDeviceEventEmitter.class)
         .emit("onWebsocketClientError", payload);
     }
 
@@ -73,7 +74,7 @@ public class WebServer extends WebSocketServer {
     public void onStart() {
         WritableMap payload = Arguments.createMap();
 
-        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+        reactContext.getJSModule(RCTDeviceEventEmitter.class)
         .emit("onWebsocketServerStart", payload);
     }
 }
