@@ -62,8 +62,12 @@ public class WebServer extends WebSocketServer {
     @Override
     public void onError(WebSocket conn, Exception ex) {
         WritableMap payload = Arguments.createMap();
-        
-        payload.putString("connId", conn.getRemoteSocketAddress().getHostName());
+        String connId = "";
+
+        if (conn != null)
+            connId = conn.getRemoteSocketAddress().getHostName();
+
+        payload.putString("connId", connId);
         payload.putString("exception", ex.toString());
 
         reactContext.getJSModule(RCTDeviceEventEmitter.class)
