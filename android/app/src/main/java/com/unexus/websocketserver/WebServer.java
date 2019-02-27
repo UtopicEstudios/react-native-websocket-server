@@ -32,7 +32,7 @@ public class WebServer extends WebSocketServer {
         payload.putString("connId", conn.getRemoteSocketAddress().getHostName());
 
         reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-        .emit("onWebsocketClientOpen", params);
+        .emit("onWebsocketClientOpen", payload);
     }
 
     @Override
@@ -45,7 +45,7 @@ public class WebServer extends WebSocketServer {
         payload.putBoolean("remote", remote);
 
         reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-        .emit("onWebsocketClientClose", params);
+        .emit("onWebsocketClientClose", payload);
     }
 
     @Override
@@ -55,7 +55,7 @@ public class WebServer extends WebSocketServer {
         payload.putString("message", message);
 
         reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-        .emit("onWebsocketClientMessage", params);
+        .emit("onWebsocketClientMessage", payload);
     }
 
     @Override
@@ -63,10 +63,10 @@ public class WebServer extends WebSocketServer {
         WritableMap payload = Arguments.createMap();
         
         payload.putString("connId", conn.getRemoteSocketAddress().getHostName());
-        payload.putBoolean("exception", ex.toString());
+        payload.putString("exception", ex.toString());
 
         reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-        .emit("onWebsocketClientError", params);
+        .emit("onWebsocketClientError", payload);
     }
 
     @Override
@@ -74,7 +74,7 @@ public class WebServer extends WebSocketServer {
         WritableMap payload = Arguments.createMap();
 
         reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-        .emit("onWebsocketServerStart", params);
+        .emit("onWebsocketServerStart", payload);
     }
 }
 
