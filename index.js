@@ -20,7 +20,7 @@ export default class WebsocketServer {
         RNWebsocketServer.broadcast(message);
     }
 
-    getActualPort() {
-        return RNWebsocketServer.getActualPort();
+    async getActualPort() {
+        return await RNWebsocketServer.getActualPort();
     }
 }

@@ -7,6 +7,7 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.LifecycleEventListener;
+import com.facebook.react.bridge.Promise;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -62,8 +63,10 @@ public class RNWebsocketServerModule extends ReactContextBaseJavaModule implemen
     }
 
     @ReactMethod
-    public int getActualPort(){
-        return webServer.getActualPort();
+    public void getActualPort(final Promise promise){
+        int port = webServer.getActualPort();
+
+        promise.resolve(port);
     }
 
     @Override
