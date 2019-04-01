@@ -19,4 +19,8 @@ export default class WebsocketServer {
     broadcast(message) {
         RNWebsocketServer.broadcast(message);
     }
+
+    getActualPort() {
+        return RNWebsocketServer.getActualPort();
+    }
 }

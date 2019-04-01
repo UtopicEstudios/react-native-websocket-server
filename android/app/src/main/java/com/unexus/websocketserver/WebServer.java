@@ -27,6 +27,14 @@ public class WebServer extends WebSocketServer {
         this.reactContext = reactContext;
     }
 
+    public int getActualPort() {
+        int port = getAddress().getPort();
+        if( port == 0 && server != null ) {
+            port = server.socket().getLocalPort();
+        }
+        return port;
+    }
+
     @Override
     public void onOpen(WebSocket conn, ClientHandshake handshake) {
         WritableMap payload = Arguments.createMap();

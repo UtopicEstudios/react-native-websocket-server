@@ -61,6 +61,11 @@ public class RNWebsocketServerModule extends ReactContextBaseJavaModule implemen
         webServer.broadcast(message);
     }
 
+    @ReactMethod
+    public int getActualPort(){
+        return webServer.getActualPort();
+    }
+
     @Override
     public void onHostResume() {
         //
