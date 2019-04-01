@@ -28,11 +28,7 @@ public class WebServer extends WebSocketServer {
     }
 
     public int getActualPort() {
-        int port = getAddress().getPort();
-        if( port == 0 && server != null ) {
-            port = server.socket().getLocalPort();
-        }
-        return port;
+        return getPort();
     }
 
     @Override
