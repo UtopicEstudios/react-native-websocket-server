@@ -69,12 +69,9 @@ public class WebServer extends WebSocketServer {
         WritableMap payload = Arguments.createMap();
         String connId = "";
 
-
-        if (conn != null){
-            Socket s = conn.getRemoteSocketAddress();
-            if (s != null)
-                connId = s.getHostName();
-        }
+        if (conn != null)
+            if (conn.getRemoteSocketAddress() != null)
+                connId = conn.getRemoteSocketAddress().getHostName();
 
         payload.putString("connId", connId);
         payload.putString("exception", ex.toString());
